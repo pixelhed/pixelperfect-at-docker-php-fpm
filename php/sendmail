@@ -1,0 +1,16 @@
+#!/usr/bin/env php
+<?php
+
+$logfile = '/tmp/sendmail.log';
+
+$logLine = '';
+$pointer = fopen('php://stdin', 'r');
+
+while ($line = fgets($pointer)) {
+    if (preg_match('/^to:/i', $line) || preg_match('/^from:/i', $line)) {
+        $logLine .= trim($line) . ' ';
+    }
+    $mail .= $line;
+}
+
+file_put_contents($logfile, date('Y-m-d H:i:s') . ' ' . $_ENV['PWD'] . ' ' . $logLine, FILE_APPEND);
