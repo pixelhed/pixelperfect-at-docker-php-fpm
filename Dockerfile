@@ -26,6 +26,9 @@ RUN pecl install redis xdebug && docker-php-ext-enable redis xdebug
 RUN curl -sL https://files.magerun.net/n98-magerun.phar -o /usr/local/bin/n98-magerun \
     && chmod +x /usr/local/bin/n98-magerun
 
+RUN curl -sL https://files.magerun.net/n98-magerun2.phar -o /usr/local/bin/n98-magerun2 \
+    && chmod +x /usr/local/bin/n98-magerun2
+
 RUN curl -sL https://getcomposer.org/composer.phar -o /usr/local/bin/composer \
     && chmod +x /usr/local/bin/composer
 
