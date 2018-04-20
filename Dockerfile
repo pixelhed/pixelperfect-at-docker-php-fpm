@@ -17,20 +17,34 @@ RUN apt-get update && apt-get install -y \
         libcurl4-gnutls-dev \
         libicu-dev \
         openssl \
-    && docker-php-ext-install -j$(nproc) iconv mcrypt pdo_mysql xsl opcache zip curl intl json pdo bcmath \
+        wget \
+        bash-completion \
+    && docker-php-ext-install -j$(nproc) iconv mcrypt pdo_mysql mysqli xsl opcache zip curl intl soap json pdo bcmath \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install -j$(nproc) gd
 
 RUN pecl install redis xdebug && docker-php-ext-enable redis xdebug
 
 RUN curl -sL https://files.magerun.net/n98-magerun.phar -o /usr/local/bin/n98-magerun \
-    && chmod +x /usr/local/bin/n98-magerun
+    && chmod +x /usr/local/bin/n98-magerun \
+    && /usr/local/bin/n98-magerun self-update
+
+RUN wget -O /etc/bash_completion.d/n98-magerun.phar https://github.com/netz98/n98-magerun/blob/master/res/autocompletion/bash/n98-magerun.phar.bash
 
 RUN curl -sL https://files.magerun.net/n98-magerun2.phar -o /usr/local/bin/n98-magerun2 \
-    && chmod +x /usr/local/bin/n98-magerun2
+    && chmod +x /usr/local/bin/n98-magerun2 \
+    && /usr/local/bin/n98-magerun2 self-update
 
 RUN curl -sL https://getcomposer.org/composer.phar -o /usr/local/bin/composer \
-    && chmod +x /usr/local/bin/composer
+    && chmod +x /usr/local/bin/composer \
+    && /usr/local/bin/composer self-update
+
+RUN wget -O /etc/bash_completion.d/n98-magerun2.phar https://github.com/netz98/n98-magerun2/blob/develop/res/autocompletion/bash/n98-magerun2.phar.bash
+
+RUN { \
+        echo 'alias mr=/usr/local/bin/n98-magerun'; \
+        echo 'alias mr2=/usr/local/bin/n98-magerun2'; \
+        } > /etc/profile.d/00-aliases.sh
 
 # Speed up install composer libraries
 RUN composer global require "hirak/prestissimo:^0.3"
