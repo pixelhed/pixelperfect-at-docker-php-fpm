@@ -1,4 +1,4 @@
-FROM php:7.0-fpm
+FROM php:7.1-fpm
 
 ENV TERM=xterm
 
@@ -29,7 +29,7 @@ RUN curl -sL https://files.magerun.net/n98-magerun.phar -o /usr/local/bin/n98-ma
     && chmod +x /usr/local/bin/n98-magerun \
     && /usr/local/bin/n98-magerun self-update
 
-RUN wget -O /etc/bash_completion.d/n98-magerun.phar https://github.com/netz98/n98-magerun/blob/master/res/autocompletion/bash/n98-magerun.phar.bash
+RUN wget -O /etc/bash_completion.d/n98-magerun.phar https://raw.githubusercontent.com/pixelhed/n98-magerun/pixelhed/res/autocompletion/bash/n98-magerun.phar.bash
 
 RUN curl -sL https://files.magerun.net/n98-magerun2.phar -o /usr/local/bin/n98-magerun2 \
     && chmod +x /usr/local/bin/n98-magerun2 \
@@ -39,12 +39,13 @@ RUN curl -sL https://getcomposer.org/composer.phar -o /usr/local/bin/composer \
     && chmod +x /usr/local/bin/composer \
     && /usr/local/bin/composer self-update
 
-RUN wget -O /etc/bash_completion.d/n98-magerun2.phar https://github.com/netz98/n98-magerun2/blob/develop/res/autocompletion/bash/n98-magerun2.phar.bash
+RUN wget -O /etc/bash_completion.d/n98-magerun2.phar https://raw.githubusercontent.com/pixelhed/n98-magerun2/pixelhed/res/autocompletion/bash/n98-magerun2.phar.bash
 
 RUN { \
-        echo 'alias mr=/usr/local/bin/n98-magerun'; \
-        echo 'alias mr2=/usr/local/bin/n98-magerun2'; \
-        } > /etc/profile.d/00-aliases.sh
+        echo 'alias mr="/usr/local/bin/n98-magerun"'; \
+        echo 'alias mr2="/usr/local/bin/n98-magerun2"'; \
+        echo 'source /etc/profile.d/bash_completion.sh'; \
+        } >> /root/.bashrc
 
 # Speed up install composer libraries
 RUN composer global require "hirak/prestissimo:^0.3"
