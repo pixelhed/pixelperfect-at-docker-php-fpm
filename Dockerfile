@@ -29,7 +29,7 @@ RUN curl -sL https://files.magerun.net/n98-magerun.phar -o /usr/local/bin/n98-ma
     && chmod +x /usr/local/bin/n98-magerun \
     && /usr/local/bin/n98-magerun self-update
 
-RUN wget -O /etc/bash_completion.d/n98-magerun.phar https://github.com/netz98/n98-magerun/blob/master/res/autocompletion/bash/n98-magerun.phar.bash
+RUN wget -O /etc/bash_completion.d/n98-magerun.phar https://raw.githubusercontent.com/netz98/n98-magerun/master/res/autocompletion/bash/n98-magerun.phar.bash
 
 RUN curl -sL https://files.magerun.net/n98-magerun2.phar -o /usr/local/bin/n98-magerun2 \
     && chmod +x /usr/local/bin/n98-magerun2 \
@@ -39,7 +39,7 @@ RUN curl -sL https://getcomposer.org/composer.phar -o /usr/local/bin/composer \
     && chmod +x /usr/local/bin/composer \
     && /usr/local/bin/composer self-update
 
-RUN wget -O /etc/bash_completion.d/n98-magerun2.phar https://github.com/netz98/n98-magerun2/blob/develop/res/autocompletion/bash/n98-magerun2.phar.bash
+RUN wget -O /etc/bash_completion.d/n98-magerun2.phar https://raw.githubusercontent.com/netz98/n98-magerun2/develop/res/autocompletion/bash/n98-magerun2.phar.bash
 
 
 RUN { \
