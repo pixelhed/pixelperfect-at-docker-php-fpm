@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y \
         libjpeg62-turbo-dev \
         libxslt-dev \
         libmcrypt-dev \
-        libpng12-dev \
+        libpng-dev \
         git \
         mysql-client \
         msmtp \
@@ -29,7 +29,7 @@ RUN curl -sL https://files.magerun.net/n98-magerun.phar -o /usr/local/bin/n98-ma
     && chmod +x /usr/local/bin/n98-magerun \
     && /usr/local/bin/n98-magerun self-update
 
-RUN wget -O /etc/bash_completion.d/n98-magerun.phar https://raw.githubusercontent.com/pixelhed/n98-magerun/pixelhed/res/autocompletion/bash/n98-magerun.phar.bash
+RUN wget -O /etc/bash_completion.d/n98-magerun.phar https://github.com/netz98/n98-magerun/blob/master/res/autocompletion/bash/n98-magerun.phar.bash
 
 RUN curl -sL https://files.magerun.net/n98-magerun2.phar -o /usr/local/bin/n98-magerun2 \
     && chmod +x /usr/local/bin/n98-magerun2 \
@@ -39,13 +39,24 @@ RUN curl -sL https://getcomposer.org/composer.phar -o /usr/local/bin/composer \
     && chmod +x /usr/local/bin/composer \
     && /usr/local/bin/composer self-update
 
-RUN wget -O /etc/bash_completion.d/n98-magerun2.phar https://raw.githubusercontent.com/pixelhed/n98-magerun2/pixelhed/res/autocompletion/bash/n98-magerun2.phar.bash
+RUN wget -O /etc/bash_completion.d/n98-magerun2.phar https://github.com/netz98/n98-magerun2/blob/develop/res/autocompletion/bash/n98-magerun2.phar.bash
+
 
 RUN { \
-        echo 'alias mr="/usr/local/bin/n98-magerun"'; \
-        echo 'alias mr2="/usr/local/bin/n98-magerun2"'; \
-        echo 'source /etc/profile.d/bash_completion.sh'; \
-        } >> /root/.bashrc
+    echo '# enable bash completion in interactive shells'; \
+    echo 'if ! shopt -oq posix; then'; \
+    echo '  if [ -f /usr/share/bash-completion/bash_completion ]; then'; \
+    echo '    . /usr/share/bash-completion/bash_completion'; \
+    echo '  elif [ -f /etc/bash_completion ]; then'; \
+    echo '    . /etc/bash_completion'; \
+    echo '  fi'; \
+    echo 'fi'; \
+    } > /root/.bashrc
+
+RUN { \
+        echo 'alias mr=/usr/local/bin/n98-magerun'; \
+        echo 'alias mr2=/usr/local/bin/n98-magerun2'; \
+        } > /etc/profile.d/00-aliases.sh
 
 # Speed up install composer libraries
 RUN composer global require "hirak/prestissimo:^0.3"
